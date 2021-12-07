@@ -63,52 +63,59 @@ private fun Greetings(names: List<String> = List(1000) { "$it" }) { // i == list
 }
 
 @Composable
-fun Greeting(name: String) {
-    // remember << guards against recomposition so the state is not reset everytime it's called
-    val expanded = remember { mutableStateOf(false) }
-    val extraPadding by animateDpAsState(
-        if (expanded.value) 48.dp else 0.dp,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        )
-    )
-
-    Surface(
-        color = MaterialTheme.colors.primary,
+private fun Greeting(name: String) {
+    Card(
+        backgroundColor = MaterialTheme.colors.primary,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
-        Row(modifier = Modifier.padding(24.dp).animateContentSize()) {
-            Column(
-                Modifier
-                    .weight(1f)
-//                    .padding(bottom = extraPadding.coerceAtLeast(0.dp)) // CRASH SAFE!!!
-            ) {
-                Text(text = "Hello, ")
-                Text(
-                    text = name, style = MaterialTheme.typography.h4.copy(
-                        fontWeight = FontWeight.ExtraBold
-                    )
-                )
-                if (expanded.value) {
-                    Text(
-                        text = ("Composem ipsum color sit lazy, " +
-                                "padding theme elit, sed do bouncy. ").repeat(4),
-                    )
-                }
+        CardContent(name)
+    }
+}
 
-            }
-            IconButton(onClick = { expanded.value = !expanded.value }) {
-                Icon(
-                    imageVector = if (expanded.value) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                    contentDescription =
-                    if (expanded.value)
-                        stringResource(R.string.show_less)
-                    else stringResource(
-                        R.string.show_more
-                    )
+@Composable
+private fun CardContent(name: String) {
+
+    // remember << guards against recomposition so the state is not reset everytime it's called
+    var expanded by remember { mutableStateOf(false) }
+
+    Row(
+        modifier = Modifier
+            .padding(24.dp)
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                )
+            )
+    ) {
+        Column(
+            Modifier
+                .weight(1f)
+                .padding(12.dp)
+        ) {
+            Text(text = "Hello, ")
+            Text(
+                text = name, style = MaterialTheme.typography.h4.copy(
+                    fontWeight = FontWeight.ExtraBold
+                )
+            )
+            if (expanded) {
+                Text(
+                    text = ("Composem ipsum color sit lazy, " +
+                            "padding theme elit, sed do bouncy. ").repeat(4),
                 )
             }
+        }
+        IconButton(onClick = { expanded = !expanded }) {
+            Icon(
+                imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                contentDescription =
+                if (expanded)
+                    stringResource(R.string.show_less)
+                else stringResource(
+                    R.string.show_more
+                )
+            )
         }
     }
 
@@ -140,11 +147,12 @@ fun OnboardingScreen(onContinueClicked: () -> Unit) {
     uiMode = UI_MODE_NIGHT_YES,
     name = "DefaultPreviewDark"
 )
+
 @Preview(showBackground = true, widthDp = 320)
 @Composable
 fun DefaultPreview() {
     ComposeBasicsTheme {
-        MyApp()
+        Greetings()
     }
 }
 
