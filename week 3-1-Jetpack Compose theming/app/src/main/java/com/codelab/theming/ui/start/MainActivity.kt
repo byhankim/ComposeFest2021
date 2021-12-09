@@ -22,6 +22,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.Surface
 
 class MainActivity : ComponentActivity() {
+
+    // 라이트/다크모드 확인방법:
+    // val isLightTheme = MaterialTheme.colors.isLight
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
