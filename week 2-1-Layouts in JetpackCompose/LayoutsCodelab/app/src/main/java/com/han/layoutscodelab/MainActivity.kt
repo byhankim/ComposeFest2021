@@ -38,10 +38,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LayoutsCodelabTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    PhotographerCard()
-                }
+                LayoutsCodelab()
             }
         }
     }
@@ -100,7 +97,9 @@ fun TwoTexts(modifier: Modifier = Modifier, text1: String, text2: String) {
                 .wrapContentWidth(Alignment.Start),
             text = text1
         )
-        Divider(color = Color.Black, modifier = Modifier.fillMaxHeight().width(1.dp))
+        Divider(color = Color.Black, modifier = Modifier
+            .fillMaxHeight()
+            .width(1.dp))
         Text(
             modifier = Modifier
                 .weight(1f)
